@@ -6,8 +6,11 @@ jobs:
   publish:
     runs-on: windows-latest
     steps:
-      - uses: vedantmgoyal9/winget-releaser@v2
-        with:
-          identifier: MarkusKellermann.Convo
-          installers-regex: 'convo-setup\.exe$'
-          token: ${{ secrets.WINGET_TOKEN }}
+      - name: Update and submit to winget
+        run: |
+          $tag = "${{ github.event.release.tag_name }}"
+          $version = $tag.TrimStart('v')
+          $url = "https://github.com/markolo10/convo-releases/releases/download/${tag}/convo-setup.exe"
+          $notesUrl = "https://github.com/markolo10/convo-releases/releases/tag/${tag}"
+          iwr https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
+          .\wingetcreate.exe update MarkusKellermann.Convo --urls $url --version $version --release-notes-url $notesUrl --submit --token ${{ secrets.WINGET_TOKEN }}

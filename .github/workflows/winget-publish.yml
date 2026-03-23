@@ -13,4 +13,4 @@ jobs:
           $url = "https://github.com/markolo10/convo-releases/releases/download/${tag}/convo-setup.exe"
           $notesUrl = "https://github.com/markolo10/convo-releases/releases/tag/${tag}"
           iwr https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
-          .\wingetcreate.exe update MarkusKellermann.Convo --urls $url --version $version --release-notes-url $notesUrl --submit --token ${{ secrets.WINGET_TOKEN }}
+          .\wingetcreate.exe update MarkusKellermann.Convo --urls $url --version $version --architecture x64 --release-notes-url $notesUrl --submit --token ${{ secrets.WINGET_TOKEN }}

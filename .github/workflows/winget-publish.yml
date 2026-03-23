@@ -2,13 +2,18 @@ name: Publish to WinGet
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v1.4.6)'
+        required: true
 jobs:
   publish:
     runs-on: windows-latest
     steps:
       - name: Update and submit to winget
         run: |
-          $tag = "${{ github.event.release.tag_name }}"
+          $tag = if ("${{ github.event.release.tag_name }}") { "${{ github.event.release.tag_name }}" } else { "${{ github.event.inputs.tag }}" }
           $version = $tag.TrimStart('v')
           $url = "https://github.com/markolo10/convo-releases/releases/download/${tag}/convo-setup.exe"
           $notesUrl = "https://github.com/markolo10/convo-releases/releases/tag/${tag}"
